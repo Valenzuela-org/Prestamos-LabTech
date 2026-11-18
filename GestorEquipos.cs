@@ -1,6 +1,4 @@
 //Logica de inventario: registrar, prestar, devolver y listar equipos
-using System.Security.Cryptography.X509Certificates;
-
 static class GestorEquipos
 {
     //Lista de equipos del laboratorio
@@ -70,12 +68,12 @@ static class GestorEquipos
     //Cuenta los equipos disponibles por categoria
     public static int ContarDisponiblesCategoria(string categoria)
     {
-        return equipos.Count(e=>e.Disponible && e.Categoria.Equals(categoria, StringComparison.OrdinalIgnoreCase));
+        return equipos.Count(e => e.Disponible && e.Categoria.Equals(categoria, StringComparison.OrdinalIgnoreCase));
     }
 
     //Devuelve solo disponibles
     public static List<Equipo> ObtenerDisponibles()
     {
-        return equipos.Where(e=>e.Disponible).ToList();
+        return equipos.Where(e => e.Disponible).ToList();
     }
 }

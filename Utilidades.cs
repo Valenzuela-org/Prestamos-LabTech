@@ -13,16 +13,15 @@ static class Utilidades
         return !string.IsNullOrEmpty(texto);
     }
 
+    //Pide texti y repite hasta que no esté vacío
     public static string PedirTexto(string mensaje)
     {
         while (true)
         {
             Console.Write(mensaje);
-            string? texto = Console.ReadLine();
+            string texto = Console.ReadLine() ?? "";
 
-            //Limpia espacios en blanco al inicio y final del texto
-            texto = Utilidades.QuitarEspacios(texto?? "");
-            if (!string.IsNullOrEmpty(texto))
+            if (TieneContenido(texto))
             {
                 return texto;
             }
