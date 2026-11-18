@@ -15,9 +15,9 @@ class Program
 //Pide los datos de un equipo y lo agrega a la lista
 static void AgregarEquipo()
     {
-        string codigo = Equipo.PedirTexto("Ingrese el código del equipo: ");
-        string nombre = Equipo.PedirTexto("Ingrese el nombre del equipo: ");
-        string categoria = Equipo.PedirTexto("Ingrese la categoría del equipo: ");
+        string codigo = Utilidades.PedirTexto("Ingrese el código del equipo: ");
+        string nombre = Utilidades.PedirTexto("Ingrese el nombre del equipo: ");
+        string categoria = Utilidades.PedirTexto("Ingrese la categoría del equipo: ");
 
         //Equipo nuevo como disponible por defecto
         Equipo nuevoEquipo = new Equipo
@@ -28,8 +28,14 @@ static void AgregarEquipo()
             Disponible = true
         };
 
-        GestorEquipos.AgregarEquipo(nuevoEquipo);
-        Console.WriteLine("Equipo agregado exitosamente.");
+        if (GestorEquipos.AgregarEquipo(nuevoEquipo))
+        {
+            Console.WriteLine("Equipo agregado exitosamente.");
+        }
+        else
+        {
+            Console.WriteLine("El equipo ya está registrado.");
+        }
     }
 
     //Muestra los equipos en la lista
@@ -49,6 +55,26 @@ static void AgregarEquipo()
             Console.WriteLine($"Código: {equipo.Codigo}, Nombre: {equipo.Nombre}, Categoría: {equipo.Categoria}, Estado: {estado}");
         }
     }
+
+    //Pide los datos para prestar un equipo y llama al gestor
+    static void PrestarEquipo()
+    {
+        string codigo = Utilidades.PedirTexto("Ingrese el código del equipo a prestar: ");
+        string estudiante = Utilidades.PedirTexto("Ingrese el nombre del estudiante: ");
+        string fechaPrestamo = Utilidades.PedirTexto("Ingrese la fecha de préstamo (dd/mm/yyyy): ");
+
+        string resultado = GestorEquipos.PrestarEquipo(codigo, estudiante, fechaPrestamo);
+        Console.WriteLine(resultado);
+    }
+
+    //Pide el codigo de un equipo y llama al gestor para devolverlo
+    static void DevolverEquipo()
+    {
+        string codigo = Utilidades.PedirTexto("Ingrese el código del equipo a devolver: ");
+        string resultado = GestorEquipos.DevolverEquipo(codigo);
+        Console.WriteLine(resultado);
+    }
+
     static void Main(string[] args)
     {
         bool salir = false;
@@ -65,10 +91,10 @@ static void AgregarEquipo()
                     ListarEquipos();
                     break;
                 case "3":
-                    // Lógica para prestar equipo
+                    PrestarEquipo();
                     break;
                 case "4":
-                    // Lógica para devolver equipo
+                    DevolverEquipo();
                     break;
                 case "5":
                     salir = true;

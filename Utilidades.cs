@@ -12,4 +12,21 @@ static class Utilidades
     {
         return !string.IsNullOrEmpty(texto);
     }
+
+    public static string PedirTexto(string mensaje)
+    {
+        while (true)
+        {
+            Console.Write(mensaje);
+            string? texto = Console.ReadLine();
+
+            //Limpia espacios en blanco al inicio y final del texto
+            texto = Utilidades.QuitarEspacios(texto?? "");
+            if (!string.IsNullOrEmpty(texto))
+            {
+                return texto;
+            }
+            Console.WriteLine("El texto no puede estar vacío. Intente de nuevo.");
+        }
+    }
 }

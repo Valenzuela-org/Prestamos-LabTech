@@ -4,10 +4,15 @@ static class GestorEquipos
     //Lista de equipos del laboratorio
     private static List<Equipo> equipos = new List<Equipo>();
 
-    //Agrega un equipo a la lista
-    public static void AgregarEquipo(Equipo equipo)
+    //Agrega un equipo solo si no existe, devuelve false si ya estaba registrado
+    public static bool AgregarEquipo(Equipo equipo)
     {
+        if (BuscarEquipo(equipo.Codigo) != null)
+        {
+            return false;
+        }
         equipos.Add(equipo);
+        return true;
     }
 
     //Devuelve la lista de equipos
@@ -16,37 +21,47 @@ static class GestorEquipos
         return equipos;
     }
 
-    //Busca un equipo por su codigo
+    //Busca un equipo por su codigo sin importar mayusculas o minusculas, devuelve null si no lo encuentra
     public static Equipo? BuscarEquipo(string codigo)
     {
-        return equipos.FirstOrDefault(e => e.Codigo == codigo);
+        return equipos.FirstOrDefault(e => e.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase));
     }
 
-    //Presta un equipo a un estudiante
-    public static bool PrestarEquipo(string codigo, string estudiante, string fechaPrestamo)
+    //Presta un equipo a un estudiante segun situacion
+    public static string PrestarEquipo(string codigo, string estudiante, string fechaPrestamo)
     {
         var equipo = BuscarEquipo(codigo);
-        if (equipo != null && equipo.Disponible)
+        if (equipo == null)
         {
-            equipo.Disponible = false;
-            equipo.Estudiante = estudiante;
-            equipo.FechaPrestamo = fechaPrestamo;
-            return true;
+            return "El equipo no fue encontrado.";
         }
-        return false;
+        if (!equipo.Disponible)
+        {
+            return $"El equipo ya está prestado a {equipo.Estudiante} el {equipo.FechaPrestamo}.";
+        }
+
+        equipo.Disponible = false;
+        equipo.Estudiante = estudiante;
+        equipo.FechaPrestamo = fechaPrestamo;
+        return "Equipo prestado exitosamente.";
     }
 
-    //Devuelve un equipo prestado
-    public static bool DevolverEquipo(string codigo)
+    //Devuelve un equipo prestado, tambien con mensaje
+    public static string DevolverEquipo(string codigo)
     {
         var equipo = BuscarEquipo(codigo);
-        if (equipo != null && !equipo.Disponible)
+
+        if (equipo == null)
         {
-            equipo.Disponible = true;
-            equipo.Estudiante = null;
-            equipo.FechaPrestamo = null;
-            return true;
+            return "El equipo no fue encontrado.";
         }
-        return false;
+        if (equipo.Disponible)
+        {
+            return "El equipo no está prestado.";
+        }
+        equipo.Disponible = true;
+        equipo.Estudiante = null;
+        equipo.FechaPrestamo = null;
+        return "Equipo devuelto exitosamente.";
+        }
     }
-}
