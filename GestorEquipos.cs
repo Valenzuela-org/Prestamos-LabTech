@@ -72,4 +72,10 @@ static class GestorEquipos
     {
         return equipos.Count(e=>e.Disponible && e.Categoria.Equals(categoria, StringComparison.OrdinalIgnoreCase));
     }
+
+    //Devuelve solo disponibles
+    public static List<Equipo> ObtenerDisponibles()
+    {
+        return equipos.Where(e=>e.Disponible).ToList();
+    }
 }

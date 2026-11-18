@@ -11,7 +11,4 @@ class Equipo
     //Datos del ultimo prestamos
     public string? Estudiante { get; set; }
     public string? FechaPrestamo { get; set; }
-    
-    //Pedir texto y se asegura que no esté vacio
-    
     }

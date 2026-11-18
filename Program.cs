@@ -9,7 +9,8 @@ class Program
         Console.WriteLine("3. Prestar equipo");
         Console.WriteLine("4. Devolver equipo");
         Console.WriteLine("5. Consultar disponibles por categoría");
-        Console.WriteLine("6. Salir");
+        Console.WriteLine("6. Listar equipos disponibles");
+        Console.WriteLine("7. Salir");
         Console.Write("Seleccione una opción: ");
     }
 
@@ -72,6 +73,23 @@ class Program
         {
             string estado = equipo.Disponible ? "Disponible" : $"Prestado a {equipo.Estudiante} el {equipo.FechaPrestamo}";
             Console.WriteLine($"Código: {equipo.Codigo}, Nombre: {equipo.Nombre}, Categoría: {equipo.Categoria}, Estado: {estado}");
+        }
+    }
+
+    //Muestra solo disponibles para prestar
+    static void ListarDisponibles()
+    {
+        var disponibles = GestorEquipos.ObtenerDisponibles();
+
+        if (disponibles.Count == 0)
+        {
+            Console.WriteLine("No hay equipos disponibles en este momento.");
+            return;
+        }
+        Console.WriteLine("=== Equipos disponibles ===");
+        foreach (var equipo in disponibles)
+        {
+            Console.WriteLine($"Código: {equipo.Codigo}, Nombre: {equipo.Nombre}, Categoría: {equipo.Categoria}");
         }
     }
 
@@ -153,6 +171,9 @@ class Program
                     ContarDisponiblesCategoria();
                     break;
                 case "6":
+                    ListarDisponibles();
+                    break;
+                case "7":
                     salir = true;
                     break;
                 default:
