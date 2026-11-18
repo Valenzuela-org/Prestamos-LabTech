@@ -12,10 +12,17 @@ class Program
         Console.Write("Seleccione una opción: ");
     }
 
-//Pide los datos de un equipo y lo agrega a la lista
-static void AgregarEquipo()
+    //Pide los datos de un equipo y lo agrega a la lista
+    static void AgregarEquipo()
     {
         string codigo = Utilidades.PedirTexto("Ingrese el código del equipo: ");
+
+        //Se valida antes de pedir nombre y categoria para no pedir datos innecesarios si el codigo ya existe
+        if (GestorEquipos.BuscarEquipo(codigo) != null)
+        {
+            Console.WriteLine("El equipo ya está registrado.");
+            return;
+        }
         string nombre = Utilidades.PedirTexto("Ingrese el nombre del equipo: ");
         string categoria = Utilidades.PedirTexto("Ingrese la categoría del equipo: ");
 
@@ -60,6 +67,24 @@ static void AgregarEquipo()
     static void PrestarEquipo()
     {
         string codigo = Utilidades.PedirTexto("Ingrese el código del equipo a prestar: ");
+
+        Equipo? equipo = GestorEquipos.BuscarEquipo(codigo);
+
+        //Validar si el codigo existe antes de pedir el estudiante y la fecha
+        if (equipo == null)
+        {
+            Console.WriteLine("El equipo no fue encontrado.");
+            return;
+        }
+
+        //Si ya está prestado no pide los demás datos
+        if (!equipo.Disponible)
+        {
+            Console.WriteLine($"El equipo ya está prestado a {equipo.Estudiante} el {equipo.FechaPrestamo}.");
+            return;
+        }
+
+        //Solo si el equipo es valido se procede
         string estudiante = Utilidades.PedirTexto("Ingrese el nombre del estudiante: ");
         string fechaPrestamo = Utilidades.PedirTexto("Ingrese la fecha de préstamo (dd/mm/yyyy): ");
 
@@ -81,7 +106,7 @@ static void AgregarEquipo()
         while (!salir)
         {
             MostrarMenu();
-            string opcion = Console.ReadLine()?? "";
+            string opcion = Console.ReadLine() ?? "";
             switch (opcion)
             {
                 case "1":
