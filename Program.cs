@@ -15,14 +15,25 @@ class Program
     //Pide los datos de un equipo y lo agrega a la lista
     static void AgregarEquipo()
     {
-        string codigo = Utilidades.PedirTexto("Ingrese el código del equipo: ");
+        string codigo;
 
-        //Se valida antes de pedir nombre y categoria para no pedir datos innecesarios si el codigo ya existe
-        if (GestorEquipos.BuscarEquipo(codigo) != null)
+        //Repite hasta que el codigo no exista o pulse 0 para salir
+        while(true)
         {
-            Console.WriteLine("El equipo ya está registrado.");
-            return;
+            codigo=Utilidades.PedirTexto("Ingrese el código del equipo (o pulse 0 para cancelar): ");
+            
+            if (codigo=="0")
+            {
+                return;
+            }
+
+            if (GestorEquipos.BuscarEquipo(codigo)==null)
+            {
+                break; //Sale del bucle
+            }
+            Console.WriteLine("El equipo ya está registrado. Intente con otro código");
         }
+
         string nombre = Utilidades.PedirTexto("Ingrese el nombre del equipo: ");
         string categoria = Utilidades.PedirTexto("Ingrese la categoría del equipo: ");
 
@@ -66,29 +77,37 @@ class Program
     //Pide los datos para prestar un equipo y llama al gestor
     static void PrestarEquipo()
     {
-        string codigo = Utilidades.PedirTexto("Ingrese el código del equipo a prestar: ");
-
-        Equipo? equipo = GestorEquipos.BuscarEquipo(codigo);
-
-        //Validar si el codigo existe antes de pedir el estudiante y la fecha
-        if (equipo == null)
+        Equipo? equipo = null;
+        //Repite hasta encontrar un equipo valido, si no existe o ya está prestado se sale del metodo
+        while (equipo == null)
         {
-            Console.WriteLine("El equipo no fue encontrado.");
-            return;
-        }
+            string codigo = Utilidades.PedirTexto("Ingrese el código del equipo a prestar (o pulse 0 para cancelar): ");
 
-        //Si ya está prestado no pide los demás datos
-        if (!equipo.Disponible)
-        {
-            Console.WriteLine($"El equipo ya está prestado a {equipo.Estudiante} el {equipo.FechaPrestamo}.");
-            return;
+            if (codigo == "0")
+            {
+                return;
+            }
+            equipo = GestorEquipos.BuscarEquipo(codigo);
+
+            //Validar si el codigo existe antes de pedir el estudiante y la fecha
+            if (equipo == null)
+            {
+                Console.WriteLine("El equipo no fue encontrado.");
+            }
+
+            //Si ya está prestado no pide los demás datos
+            else if (!equipo.Disponible)
+            {
+                Console.WriteLine($"El equipo ya está prestado a {equipo.Estudiante} el {equipo.FechaPrestamo}.");
+                equipo=null;
+            }
         }
 
         //Solo si el equipo es valido se procede
         string estudiante = Utilidades.PedirTexto("Ingrese el nombre del estudiante: ");
         string fechaPrestamo = Utilidades.PedirTexto("Ingrese la fecha de préstamo (dd/mm/yyyy): ");
 
-        string resultado = GestorEquipos.PrestarEquipo(codigo, estudiante, fechaPrestamo);
+        string resultado = GestorEquipos.PrestarEquipo(equipo.Codigo, estudiante, fechaPrestamo);
         Console.WriteLine(resultado);
     }
 
