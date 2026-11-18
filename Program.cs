@@ -8,7 +8,8 @@ class Program
         Console.WriteLine("2. Listar equipos");
         Console.WriteLine("3. Prestar equipo");
         Console.WriteLine("4. Devolver equipo");
-        Console.WriteLine("5. Salir");
+        Console.WriteLine("5. Consultar disponibles por categoría");
+        Console.WriteLine("6. Salir");
         Console.Write("Seleccione una opción: ");
     }
 
@@ -18,16 +19,16 @@ class Program
         string codigo;
 
         //Repite hasta que el codigo no exista o pulse 0 para salir
-        while(true)
+        while (true)
         {
-            codigo=Utilidades.PedirTexto("Ingrese el código del equipo (o pulse 0 para cancelar): ");
-            
-            if (codigo=="0")
+            codigo = Utilidades.PedirTexto("Ingrese el código del equipo (o pulse 0 para cancelar): ");
+
+            if (codigo == "0")
             {
                 return;
             }
 
-            if (GestorEquipos.BuscarEquipo(codigo)==null)
+            if (GestorEquipos.BuscarEquipo(codigo) == null)
             {
                 break; //Sale del bucle
             }
@@ -99,7 +100,7 @@ class Program
             else if (!equipo.Disponible)
             {
                 Console.WriteLine($"El equipo ya está prestado a {equipo.Estudiante} el {equipo.FechaPrestamo}.");
-                equipo=null;
+                equipo = null;
             }
         }
 
@@ -117,6 +118,14 @@ class Program
         string codigo = Utilidades.PedirTexto("Ingrese el código del equipo a devolver: ");
         string resultado = GestorEquipos.DevolverEquipo(codigo);
         Console.WriteLine(resultado);
+    }
+
+    //Pide una categoria y muestra los equipos disponibles
+    static void ContarDisponiblesCategoria()
+    {
+        string categoria = Utilidades.PedirTexto("Ingrese la categoría a consultar: ");
+        int cantidad = GestorEquipos.ContarDisponiblesCategoria(categoria);
+        Console.WriteLine($"Equipos disponibles en la categoría {categoria}: {cantidad}");
     }
 
     static void Main(string[] args)
@@ -141,6 +150,9 @@ class Program
                     DevolverEquipo();
                     break;
                 case "5":
+                    ContarDisponiblesCategoria();
+                    break;
+                case "6":
                     salir = true;
                     break;
                 default:

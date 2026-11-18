@@ -1,4 +1,6 @@
 //Logica de inventario: registrar, prestar, devolver y listar equipos
+using System.Security.Cryptography.X509Certificates;
+
 static class GestorEquipos
 {
     //Lista de equipos del laboratorio
@@ -63,5 +65,11 @@ static class GestorEquipos
         equipo.Estudiante = null;
         equipo.FechaPrestamo = null;
         return "Equipo devuelto exitosamente.";
-        }
     }
+
+    //Cuenta los equipos disponibles por categoria
+    public static int ContarDisponiblesCategoria(string categoria)
+    {
+        return equipos.Count(e=>e.Disponible && e.Categoria.Equals(categoria, StringComparison.OrdinalIgnoreCase));
+    }
+}
