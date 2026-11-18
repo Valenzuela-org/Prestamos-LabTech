@@ -1,0 +1,24 @@
+INICIO
+  inventario = lista vacía
+  REPETIR
+    mostrar menú
+    leer opción
+    SI opción = 1 -> registrar equipo
+         pedir código, nombre, categoría
+         SI algún dato está vacío -> mostrar error
+         SI NO -> agregar al inventario con estado "disponible"
+    SI opción = 2 -> prestar equipo
+         pedir código, estudiante, fecha
+         SI algún dato está vacío -> mostrar error
+         SI el código no existe -> mostrar error
+         SI el equipo está "no disponible" -> mostrar error
+         SI NO -> cambiar estado a "no disponible" y guardar estudiante y fecha
+    SI opción = 3 -> devolver equipo
+         pedir código
+         SI el código no existe -> mostrar error
+         SI NO -> cambiar estado a "disponible"
+    SI opción = 4 -> listar disponibilidad
+    SI opción = 5 -> contar disponibles por categoría
+    SI opción = 0 -> salir
+  HASTA que opción = 0
+FIN
