@@ -1,24 +1,52 @@
 INICIO
-  inventario = lista vacía
-  REPETIR
+  equipos = lista vacía
+  salir = falso
+
+  MIENTRAS salir sea falso
     mostrar menú
     leer opción
-    SI opción = 1 -> registrar equipo
-         pedir código, nombre, categoría
-         SI algún dato está vacío -> mostrar error
-         SI NO -> agregar al inventario con estado "disponible"
-    SI opción = 2 -> prestar equipo
-         pedir código, estudiante, fecha
-         SI algún dato está vacío -> mostrar error
-         SI el código no existe -> mostrar error
-         SI el equipo está "no disponible" -> mostrar error
-         SI NO -> cambiar estado a "no disponible" y guardar estudiante y fecha
-    SI opción = 3 -> devolver equipo
+
+    SI opción = 1 -> agregar equipo
+         REPETIR
+           pedir código (0 para cancelar)
+           SI código = 0 -> volver al menú
+           SI el código ya existe -> mostrar error y pedir otro
+         HASTA que el código esté libre
+         pedir nombre y categoría
+         agregar a la lista con estado "disponible"
+
+    SI opción = 2 -> listar equipos
+         SI la lista está vacía -> mostrar "no hay equipos"
+         SI NO -> mostrar todos con su estado
+
+    SI opción = 3 -> prestar equipo
+         REPETIR
+           pedir código (0 para cancelar)
+           SI código = 0 -> volver al menú
+           SI el código no existe -> mostrar error y pedir otro
+           SI el equipo ya está prestado -> mostrar error y pedir otro
+         HASTA que el equipo exista y esté disponible
+         pedir estudiante y fecha
+         cambiar estado a "no disponible" y guardar estudiante y fecha
+
+    SI opción = 4 -> devolver equipo
          pedir código
          SI el código no existe -> mostrar error
-         SI NO -> cambiar estado a "disponible"
-    SI opción = 4 -> listar disponibilidad
-    SI opción = 5 -> contar disponibles por categoría
-    SI opción = 0 -> salir
-  HASTA que opción = 0
+         SI el equipo ya está disponible -> mostrar error
+         SI NO -> cambiar estado a "disponible" y borrar estudiante y fecha
+
+    SI opción = 5 -> consultar disponibles por categoría
+         pedir categoría
+         contar los equipos disponibles de esa categoría
+         mostrar la cantidad
+
+    SI opción = 6 -> listar equipos disponibles
+         SI no hay disponibles -> mostrar mensaje
+         SI NO -> mostrar solo los disponibles
+
+    SI opción = 7 -> salir = verdadero
+
+    SI NO -> mostrar "opción no válida"
+
+  FIN MIENTRAS
 FIN
